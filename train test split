@@ -1,0 +1,24 @@
+/*A common solution is to use
+* each instance’s identifier to decide whether or not it should go in the test set (assuming instances have a
+* unique and immutable identifier). For example, you could compute a hash of each instance’s identifier,
+* keep only the last byte of the hash, and put the instance in the test set if this value is lower or equal to 51
+* (~20% of 256). This ensures that the test set will remain consistent across multiple runs, even if you
+* refresh the dataset. The new test set will contain 20% of the new instances, but it will not contain any
+* instance that was previously in the training set.
+*/
+
+
+import hashlib
+def test_set_check(identifier, test_ratio, hash=hashlib.md5):
+    return bytearray(hash(np.int64(identifier)).digest())[-1] < 256 * test_ratio
+    
+    
+def train_test_split(df,test_size,id_column,hash = hashlib.md5/*hash function*/):
+    ids = df[id_column]
+    in_test_set = ids.apply(lambda id_:test_set_check(id_,test_size,hash))
+    return df.loc[~in_test_set],df.loc[in_test_set]
+    
+// To create an index column if not present
+dataframe = dataframe.reset_index() 
+train,test = train_test_split(dataframe,test_size = 0.2,"index"/* name of index coulmn*/)
+    
