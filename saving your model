@@ -1,0 +1,12 @@
+/*You should save every model you experiment with, so you can come back easily to any model you want. Make sure you save
+* both the hyperparameters and the trained parameters, as well as the cross-validation scores and perhaps the actual predictions as
+* well. This will allow you to easily compare scores across model types, and compare the types of errors they make. You can
+* easily save Scikit-Learn models by using Python’s pickle module, or using sklearn.externals.joblib, which is more efficient
+* at serializing large NumPy arrays:
+*/
+
+
+from sklearn.externals import joblib
+joblib.dump(my_model, "my_model.pkl")
+# and later...
+my_model_loaded = joblib.load("my_model.pkl")
